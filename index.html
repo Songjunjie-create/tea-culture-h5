@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#2d5a27">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>茶韵 · 茶文化知识学习平台</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container" id="app">
+
+    <!-- ==================== 首页 ==================== -->
+    <div class="page active" id="page-home">
+      <!-- 搜索栏 -->
+      <div class="search-bar">
+        <div class="search-bar-inner" onclick="navigateTo('courses')">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="搜索茶文化知识、课程..." readonly>
+        </div>
+      </div>
+
+      <!-- 轮播图 -->
+      <div class="banner-section">
+        <div class="carousel-container" id="carousel">
+          <div class="carousel-track" id="carouselTrack"></div>
+          <div class="carousel-dots" id="carouselDots"></div>
+        </div>
+      </div>
+
+      <!-- 分类快捷入口 -->
+      <div class="section-header">
+        <span class="section-title">分类浏览</span>
+        <span class="section-more" onclick="navigateTo('category')">全部 ›</span>
+      </div>
+      <div class="category-grid" id="categoryGrid"></div>
+
+      <!-- 推荐课程 -->
+      <div class="section-header">
+        <span class="section-title">推荐课程</span>
+        <span class="section-more" onclick="navigateTo('courses')">更多 ›</span>
+      </div>
+      <div class="card-list" id="homeCourses"></div>
+
+      <!-- 精选知识 -->
+      <div class="section-header">
+        <span class="section-title">精选知识</span>
+        <span class="section-more" onclick="navigateTo('knowledge')">更多 ›</span>
+      </div>
+      <div class="card-list" id="homeKnowledge"></div>
+    </div>
+
+    <!-- ==================== 分类页 ==================== -->
+    <div class="page" id="page-category">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="navigateTo('home')">←</button>
+        <span class="nav-title">分类浏览</span>
+        <span></span>
+      </div>
+      <div class="category-filter" id="categoryFilter"></div>
+      <div class="card-list" id="categoryContent"></div>
+      <div class="empty-state hidden" id="categoryEmpty">
+        <div class="empty-icon">📭</div>
+        <div class="empty-text">该分类暂无内容</div>
+      </div>
+    </div>
+
+    <!-- ==================== 课程页 ==================== -->
+    <div class="page" id="page-courses">
+      <div class="search-bar">
+        <div class="search-bar-inner">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="搜索课程..." id="courseSearch" oninput="filterCourses()">
+          <button class="search-clear" id="courseSearchClear" onclick="clearCourseSearch()">✕</button>
+        </div>
+      </div>
+      <div class="card-list" id="courseList"></div>
+      <div class="empty-state hidden" id="courseEmpty">
+        <div class="empty-icon">📚</div>
+        <div class="empty-text">未找到相关课程</div>
+      </div>
+    </div>
+
+    <!-- ==================== 知识页 ==================== -->
+    <div class="page" id="page-knowledge">
+      <div class="search-bar">
+        <div class="search-bar-inner">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="搜索知识文章..." id="knowledgeSearch" oninput="filterKnowledge()">
+          <button class="search-clear" id="knowledgeSearchClear" onclick="clearKnowledgeSearch()">✕</button>
+        </div>
+      </div>
+      <div class="card-list" id="knowledgeList"></div>
+      <div class="empty-state hidden" id="knowledgeEmpty">
+        <div class="empty-icon">📖</div>
+        <div class="empty-text">未找到相关知识</div>
+      </div>
+    </div>
+
+    <!-- ==================== 我的 ==================== -->
+    <div class="page" id="page-mine">
+      <div class="profile-header">
+        <img class="profile-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=tea" alt="头像">
+        <div class="profile-nickname" id="profileNickname">茶文化爱好者</div>
+        <div class="profile-phone">📱 138****8888</div>
+        <div class="profile-stats">
+          <div class="stat-item">
+            <div class="stat-num" id="statDays">142</div>
+            <div class="stat-label">学习天数</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" id="statFavs">28</div>
+            <div class="stat-label">收藏数量</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-menu">
+        <div class="menu-group">
+          <div class="menu-item" onclick="showFavorites()">
+            <span class="menu-icon">⭐</span>
+            <span class="menu-text">我的收藏</span>
+            <span class="menu-arrow">›</span>
+          </div>
+          <div class="menu-item" onclick="showToast('功能开发中')">
+            <span class="menu-icon">📋</span>
+            <span class="menu-text">学习记录</span>
+            <span class="menu-arrow">›</span>
+          </div>
+          <div class="menu-item" onclick="showToast('功能开发中')">
+            <span class="menu-icon">🏅</span>
+            <span class="menu-text">学习成就</span>
+            <span class="menu-arrow">›</span>
+          </div>
+        </div>
+        <div class="menu-group">
+          <div class="menu-item" onclick="showToast('功能开发中')">
+            <span class="menu-icon">⚙️</span>
+            <span class="menu-text">设置</span>
+            <span class="menu-arrow">›</span>
+          </div>
+          <div class="menu-item" onclick="showToast('功能开发中')">
+            <span class="menu-icon">💬</span>
+            <span class="menu-text">意见反馈</span>
+            <span class="menu-arrow">›</span>
+          </div>
+          <div class="menu-item" onclick="showToast('功能开发中')">
+            <span class="menu-icon">ℹ️</span>
+            <span class="menu-text">关于我们</span>
+            <span class="menu-arrow">›</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 收藏页 ==================== -->
+    <div class="detail-page" id="page-favorites">
+      <div class="detail-header">
+        <button class="back-btn" onclick="closeFavorites()">←</button>
+        <span class="detail-title">我的收藏</span>
+        <span></span>
+      </div>
+      <div class="fav-tabs">
+        <button class="fav-tab active" onclick="switchFavTab('course', this)">课程收藏</button>
+        <button class="fav-tab" onclick="switchFavTab('knowledge', this)">知识收藏</button>
+      </div>
+      <div class="card-list" id="favList"></div>
+      <div class="empty-state hidden" id="favEmpty">
+        <div class="empty-icon">💝</div>
+        <div class="empty-text">暂无收藏内容</div>
+      </div>
+    </div>
+
+    <!-- ==================== 课程详情页 ==================== -->
+    <div class="detail-page" id="page-course-detail">
+      <div class="detail-header">
+        <button class="back-btn" onclick="closeCourseDetail()">←</button>
+        <span class="detail-title" id="courseDetailTitle">课程详情</span>
+        <button class="favor-btn" id="courseFavorBtn" onclick="toggleCourseFavorite()">☆</button>
+      </div>
+      <div id="courseDetailContent"></div>
+    </div>
+
+    <!-- ==================== 知识详情页 ==================== -->
+    <div class="detail-page" id="page-knowledge-detail">
+      <div class="detail-header">
+        <button class="back-btn" onclick="closeKnowledgeDetail()">←</button>
+        <span class="detail-title" id="knowledgeDetailTitle">知识详情</span>
+        <button class="favor-btn" id="knowledgeFavorBtn" onclick="toggleKnowledgeFavorite()">☆</button>
+      </div>
+      <div id="knowledgeDetailContent"></div>
+    </div>
+
+    <!-- ==================== 底部导航 ==================== -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-page="home" onclick="navigateTo('home')">
+        <span class="nav-icon">🏠</span>
+        <span>首页</span>
+      </button>
+      <button class="nav-item" data-page="category" onclick="navigateTo('category')">
+        <span class="nav-icon">📂</span>
+        <span>分类</span>
+      </button>
+      <button class="nav-item" data-page="courses" onclick="navigateTo('courses')">
+        <span class="nav-icon">🎓</span>
+        <span>课程</span>
+      </button>
+      <button class="nav-item" data-page="knowledge" onclick="navigateTo('knowledge')">
+        <span class="nav-icon">📖</span>
+        <span>知识</span>
+      </button>
+      <button class="nav-item" data-page="mine" onclick="navigateTo('mine')">
+        <span class="nav-icon">👤</span>
+        <span>我的</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
